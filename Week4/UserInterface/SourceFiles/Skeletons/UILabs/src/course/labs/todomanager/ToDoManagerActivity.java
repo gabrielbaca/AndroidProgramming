@@ -24,6 +24,7 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 import course.labs.todomanager.ToDoItem.Priority;
 import course.labs.todomanager.ToDoItem.Status;
+import android.widget.Toast;
 
 public class ToDoManagerActivity extends ListActivity {
 
@@ -42,7 +43,7 @@ public class ToDoManagerActivity extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		//Toast.makeText(getApplicationContext(), "Application started", Toast.LENGTH_SHORT).show();
 		// Create a new TodoListAdapter for this ListActivity's ListView
 		mAdapter = new ToDoListAdapter(getApplicationContext());
 
@@ -50,10 +51,11 @@ public class ToDoManagerActivity extends ListActivity {
 		getListView().setFooterDividersEnabled(true);
 
 		//TODO - Inflate footerView for footer_view.xml file
-
-		TextView footerView = null;
+		
+		TextView footerView = (TextView) getLayoutInflater().inflate(R.layout.footer_view, getListView(), false);
 
 		//TODO - Add footerView to ListView
+		getListView().addFooterView(footerView);
 
 		footerView.setOnClickListener(new OnClickListener() {
 			@Override
@@ -62,24 +64,35 @@ public class ToDoManagerActivity extends ListActivity {
 				log("Entered footerView.OnClickListener.onClick()");
 
 				//TODO - Attach Listener to FooterView. Implement onClick().
-
+				Intent child = new Intent(ToDoManagerActivity.this, AddToDoActivity.class);
+				startActivityForResult(child, ADD_TODO_ITEM_REQUEST);
 			}
 		});
 
 		//TODO - Attach the adapter to this ListActivity's ListView
-
+		setListAdapter(mAdapter);
+		
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+		super.onActivityResult(requestCode, resultCode, data);
 		log("Entered onActivityResult()");
 
 		// TODO - Check result code and request code.
 		// If user submitted a new ToDoItem
 		// Create a new ToDoItem from the data Intent
 		// and then add it to the adapter
-
+		if(requestCode == ADD_TODO_ITEM_REQUEST){
+			switch(resultCode){
+			case RESULT_OK:
+				ToDoItem newTodoItem = new ToDoItem(data);
+				mAdapter.add(newTodoItem);
+				break;
+			case RESULT_CANCELED:
+				break;
+			}
+		}
 	}
 
 	// Do not modify below here
