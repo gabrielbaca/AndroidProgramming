@@ -1,15 +1,5 @@
 package course.labs.notificationslab;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -19,6 +9,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.*;
 
 public class MainActivity extends Activity implements SelectionListener {
 
@@ -26,7 +22,7 @@ public class MainActivity extends Activity implements SelectionListener {
 	public static final String[] FRIENDS = { "taylorswift13", "msrebeccablack",
 			"ladygaga" };
 	public static final String DATA_REFRESHED_ACTION = "course.labs.notificationslab.DATA_REFRESHED";
-	
+
 	private static final int NUM_FRIENDS = 3;
 	private static final String URL_LGAGA = "https://d396qusza40orc.cloudfront.net/android%2FLabs%2FUserNotifications%2Fladygaga.txt";
 	private static final String URL_RBLACK = "https://d396qusza40orc.cloudfront.net/android%2FLabs%2FUserNotifications%2Frebeccablack.txt";
@@ -84,15 +80,17 @@ public class MainActivity extends Activity implements SelectionListener {
 			// Show a Toast Notification to inform user that 
 			// the app is "Downloading Tweets from Network"
 			log ("Issuing Toast Message");
+            Toast toast = Toast.makeText(getApplicationContext(), "Downloading Tweets from Network", Toast.LENGTH_LONG);
+            toast.show();
 
-			
-			
-			// TODO:
+
+            // TODO:
 			// Start new AsyncTask to download Tweets from network
+            DownloaderTask downloaderTask = new DownloaderTask(this);
+            downloaderTask.execute(URL_TSWIFT, URL_RBLACK, URL_LGAGA);
 
 
 
-			
 			// Set up a BroadcastReceiver to receive an Intent when download
 			// finishes. 
 			mRefreshReceiver = new BroadcastReceiver() {
@@ -105,6 +103,9 @@ public class MainActivity extends Activity implements SelectionListener {
 					// Check to make sure this is an ordered broadcast
 					// Let sender know that the Intent was received
 					// by setting result code to RESULT_OK
+                    if (isOrderedBroadcast()) {
+                        setResultCode(RESULT_OK);
+                    }
 
 
 				}
@@ -179,9 +180,13 @@ public class MainActivity extends Activity implements SelectionListener {
 		// TODO:
 		// Register the BroadcastReceiver to receive a 
 		// DATA_REFRESHED_ACTION broadcast
+        if (mRefreshReceiver != null) {
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(DATA_REFRESHED_ACTION);
+            registerReceiver(mRefreshReceiver, intentFilter);
+        }
 
 
-		
 	}
 
 	@Override
@@ -189,10 +194,12 @@ public class MainActivity extends Activity implements SelectionListener {
 
 		// TODO:
 		// Unregister the BroadcastReceiver
+        if (mRefreshReceiver != null) {
+            unregisterReceiver(mRefreshReceiver);
+        }
 
 
-		
-		
+
 		super.onPause();
 
 	}
