@@ -106,17 +106,13 @@ public class MainActivity extends Activity implements SelectionListener {
                     if (isOrderedBroadcast()) {
                         setResultCode(RESULT_OK);
                     }
-
-
 				}
 			};
 
 		} else {
-
 			loadTweetsFromFile();
 			parseJSON();
 			updateFeed();
-
 		}
 	}
 
