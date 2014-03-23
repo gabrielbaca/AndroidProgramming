@@ -1,0 +1,7 @@
+03-23 01:58:16.901: I/Lab-ContentProvider(26690): Entered onCreateLoader()
+03-23 01:58:25.536: I/Lab-ContentProvider(26690): Entered footerView.OnClickListener.onClick()
+03-23 01:58:25.636: I/Lab-ContentProvider(26690): Starting Place Download
+03-23 01:58:26.666: I/Lab-ContentProvider(26690): Entered addNewPlace()
+03-23 01:58:30.766: I/Lab-ContentProvider(26690): Entered footerView.OnClickListener.onClick()
+03-23 01:58:30.871: I/Lab-ContentProvider(26690): You already have this location badge
+03-23 01:58:36.766: I/Lab-ContentProvider(26690): Place: The Greenhouse Country: United States
