@@ -68,9 +68,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import edu.vanderbilt.mooc.R;
 import edu.vuum.mocca.orm.MoocResolver;
 import edu.vuum.mocca.orm.StoryData;
+import edu.vanderbilt.mooc.R;
 
 /**
  * Fragments require a Container Activity, this is the one for the Edit

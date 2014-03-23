@@ -51,7 +51,6 @@ package edu.vuum.mocca.ui.story;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
-
 import edu.vanderbilt.mooc.R;
 
 /**

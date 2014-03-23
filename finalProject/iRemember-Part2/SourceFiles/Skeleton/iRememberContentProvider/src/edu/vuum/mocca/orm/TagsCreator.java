@@ -46,77 +46,79 @@ grant permission for the name Vanderbilt University or
 University of Maryland to appear in their names.
  */
 
+package edu.vuum.mocca.orm;
 
-package edu.vuum.mocca.ui.story;
+import java.util.ArrayList;
 
-import java.util.List;
+import android.content.ContentValues;
+import android.database.Cursor;
+import edu.vuum.mocca.provider.MoocSchema;
 
-import android.content.Context;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-import edu.vuum.mocca.orm.StoryData;
-import edu.vanderbilt.mooc.R;
+/**
+ * TagsCreator is a helper class that does convenience functions for converting
+ * between the Custom ORM objects, ContentValues, and Cursors.
+ * 
+ * @author Michael A. Walker
+ * 
+ */
+public class TagsCreator {
 
-public class StoryDataArrayAdaptor extends ArrayAdapter<StoryData> {
+	/**
+	 * Create a ContentValues from a provided TagsData.
+	 * 
+	 * @param data
+	 *            StoryData to be converted.
+	 * @return ContentValues that is created from the StoryData object
+	 */
+	public static ContentValues getCVfromTags(final TagsData data) {
+		ContentValues rValue = new ContentValues();
+		rValue.put(MoocSchema.Tags.Cols.LOGIN_ID, data.loginId);
+		rValue.put(MoocSchema.Tags.Cols.STORY_ID, data.storyId);
+		rValue.put(MoocSchema.Tags.Cols.TAG, data.tag);
+		return rValue;
+	}
 
-    private static final String LOG_TAG = StoryDataArrayAdaptor.class
-            .getCanonicalName();
+	/**
+	 * Get all of the TagsData from the passed in cursor.
+	 * 
+	 * @param cursor
+	 *            passed in cursor
+	 * @return ArrayList<TagsData\> The set of TagsData
+	 */
+	public static ArrayList<TagsData> getTagsDataArrayListFromCursor(
+			Cursor cursor) {
+		ArrayList<TagsData> rValue = new ArrayList<TagsData>();
+		if (cursor != null) {
+			if (cursor.moveToFirst()) {
+				do {
+					rValue.add(getTagsDataFromCursor(cursor));
+				} while (cursor.moveToNext() == true);
+			}
+		}
+		return rValue;
+	}
 
-    int resource;
+	/**
+	 * Get the first TagsData from the passed in cursor.
+	 * 
+	 * @param cursor
+	 *            passed in cursor
+	 * @return TagsData object
+	 */
+	public static TagsData getTagsDataFromCursor(Cursor cursor) {
 
-    public StoryDataArrayAdaptor(Context _context, int _resource,
-            List<StoryData> _items) {
-        super(_context, _resource, _items);
-        Log.d(LOG_TAG, "constructor()");
-        resource = _resource;
-    }
+		long rowID = cursor.getLong(cursor
+				.getColumnIndex(MoocSchema.Tags.Cols.ID));
+		long loginId = cursor.getLong(cursor
+				.getColumnIndex(MoocSchema.Tags.Cols.LOGIN_ID));
+		long storyId = cursor.getLong(cursor
+				.getColumnIndex(MoocSchema.Tags.Cols.STORY_ID));
+		String tag = cursor.getString(cursor
+				.getColumnIndex(MoocSchema.Tags.Cols.TAG));
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        Log.d(LOG_TAG, "getView()");
-        LinearLayout todoView = null;
-        try {
-            StoryData item = getItem(position);
+		// construct the returned object
+		TagsData rValue = new TagsData(rowID, loginId, storyId, tag);
 
-            long KEY_ID = item.KEY_ID;
-            String title = item.title;
-            long creationTime = item.storyTime;
-            
-            if (convertView == null) {
-                todoView = new LinearLayout(getContext());
-                String inflater = Context.LAYOUT_INFLATER_SERVICE;
-                LayoutInflater vi = (LayoutInflater) getContext()
-                        .getSystemService(inflater);
-                vi.inflate(resource, todoView, true);
-            } else {
-                todoView = (LinearLayout) convertView;
-            }
-
-            TextView KEY_IDTV = (TextView) todoView
-            		.findViewById(R.id.story_listview_custom_row_KEY_ID_textView);
-            
-            TextView titleTV = (TextView) todoView
-                    .findViewById(R.id.story_listview_custom_row_title_textView);
-            TextView creationTimeTV = (TextView) todoView
-                    .findViewById(R.id.story_listview_custom_row_creation_time_textView);
-            
-            KEY_IDTV.setText("" + KEY_ID);
-            titleTV.setText("" + title);
-            creationTimeTV.setText("" + StoryData.FORMAT.format(creationTime));
-            Log.i("StoryDataArrayAdaptor", String.valueOf(item.creationTime));
-            
-        } catch (Exception e) {
-            Toast.makeText(getContext(),
-                    "exception in ArrayAdpter: " + e.getMessage(),
-                    Toast.LENGTH_SHORT).show();
-        }
-        return todoView;
-    }
-
+		return rValue;
+	}
 }

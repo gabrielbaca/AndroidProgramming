@@ -66,10 +66,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import edu.vanderbilt.mooc.R;
 import edu.vuum.mocca.orm.MoocResolver;
 import edu.vuum.mocca.orm.StoryData;
-
+import edu.vanderbilt.mooc.R;
 public class EditStoryFragment extends Fragment {
 
 	final static public String LOG_TAG = EditStoryFragment.class

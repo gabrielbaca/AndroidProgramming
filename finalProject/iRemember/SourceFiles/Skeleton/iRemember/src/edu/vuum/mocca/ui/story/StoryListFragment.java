@@ -68,11 +68,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
-import edu.vanderbilt.mooc.R;
 import edu.vuum.mocca.orm.MoocResolver;
 import edu.vuum.mocca.orm.StoryData;
 import edu.vuum.mocca.provider.MoocSchema;
-
+import edu.vanderbilt.mooc.R;
 /**
  * Fragment to hold all the UI components and related Logic for Listing
  * StoryData.
