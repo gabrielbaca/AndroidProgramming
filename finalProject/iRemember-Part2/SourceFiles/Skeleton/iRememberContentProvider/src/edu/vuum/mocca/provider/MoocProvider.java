@@ -145,32 +145,9 @@ public class MoocProvider extends ContentProvider {
             final String[] selectionArgs, final String sortOrder) {
 
         // TODO: Perform a query on the database with the given parameters
-    	String mSelection = selection;
-    	switch (uriMatcher.match(uri)) 
-    	{
-	        case STORY_SINGLE_ROW: 
-	        {
-	            mSelection = mSelection + MoocSchema.Story.Cols.ID
-	                    + " = " + uri.getLastPathSegment();
-	        }
-	        case STORY_ALL_ROWS: 
-	        {
-	            return query(uri, MoocSchema.Story.TABLE_NAME, projection,
-	                    mSelection, selectionArgs, sortOrder);
-	        }
-	        case TAGS_SINGLE_ROW: 
-	        {
-	            mSelection = mSelection + MoocSchema.Tags.Cols.ID
-	                    + " = " + uri.getLastPathSegment();
-	        }
-	        case TAGS_ALL_ROWS: 
-	        {
-	            return query(uri, MoocSchema.Tags.TABLE_NAME, projection,
-	                    mSelection, selectionArgs, sortOrder);
-	        }
-	        default:
-	            return null;
-        }
+    	Cursor c = mDB.query(tableName, projection, selection, selectionArgs, sortOrder);
+        c.setNotificationUri(getContext().getContentResolver(), uri);
+    	return c;
     }
 
     @Override

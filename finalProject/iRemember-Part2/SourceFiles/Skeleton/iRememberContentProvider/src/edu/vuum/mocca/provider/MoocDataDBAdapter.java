@@ -191,11 +191,10 @@ public class MoocDataDBAdapter {
             final String sortOrder) {
 
         // TODO: Perform a query on the database with the given parameters
-        SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-        queryBuilder.setTables(table);
-        
-        // Returning a cursor
-        return queryBuilder.query(db, projection, selection, selectionArgs, null, null, sortOrder);
+    	SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+        qb.setTables(table);
+        Cursor c = qb.query(db, projection, selection, selectionArgs, null, null, sortOrder);
+        return c;
     }
 
     /**

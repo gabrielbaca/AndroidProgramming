@@ -101,8 +101,7 @@ public class LoginActivity extends AccountAuthenticatorActivity {
             mContext = c;
             mLoginButton.setEnabled(false);
             // display a dialog with a spinner showing progress being worked on
-            mDialog = ProgressDialog.show(c, "",
-                    getString(R.string.authenticating), true, false);
+            mDialog = ProgressDialog.show(c, "", getString(R.string.authenticating), true, false);
             mDialog.setCancelable(true);
         }
 
